@@ -51,14 +51,16 @@ export default function Video({ lessonSlug }: Videoprops) {
 
   if (!data) {
     return (
-      <div className="flex-1">
-        <p>Loading... Restart if it doesn't show up after 2 minutes.</p>
+      <div className="flex-1 justify-center mt-4">
+        <div className=" flex justify-center ">
+          <div className="h-full w-full max-w-[1100px] max-h-[60vh] aspect-video bg-gray-500 "></div>
+        </div>
       </div>
-    )
+    );
   }
 
   return (
-    <div className="flex-1">
+    <div className="flex-1 mt-4">
       <div className=" flex justify-center">
         <div className="h-full w-full max-w-[1100px] max-h-[60vh] aspect-video  ">
           <Player>
@@ -71,9 +73,7 @@ export default function Video({ lessonSlug }: Videoprops) {
       <div className="p-8 max-w-[1100px] mx-auto">
         <div className="flex items-start gap-6 lg:gap-16 flex-col lg:flex-row ">
           <div className="flex-1">
-            <h1 className="text-3xl font-bold">
-              {data.lesson.title}
-            </h1>
+            <h1 className="text-3xl font-bold">{data.lesson.title}</h1>
             <p className="mt-4 text-gray-200 leading-relaxed">
               {data.lesson.description}
             </p>
@@ -135,7 +135,7 @@ export default function Video({ lessonSlug }: Videoprops) {
           </a>
           <a
             className="bg-gray-700 rounded overflow-hidden flex items-stretch gap-6 hover:bg-gray-600 transition-colors"
-            href=""
+            href="https://github.com/isBreno/ignite-lab-rocketseat"
           >
             <div className="bg-green-700 h-full p-6 flex items-center">
               <Image size={40} />
