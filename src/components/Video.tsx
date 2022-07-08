@@ -1,4 +1,6 @@
-import { DefaultUi, Player, Youtube } from "@vime/react";
+import { ClickToPlay, DefaultControls, DefaultUi, Player, Ui, Youtube } from "@vime/react";
+import Skeleton from 'react-loading-skeleton'
+import 'react-loading-skeleton/dist/skeleton.css'
 import {
   CaretRight,
   DiscordLogo,
@@ -9,20 +11,21 @@ import {
 import React from "react";
 import "@vime/core/themes/default.css";
 import { gql, useQuery } from "@apollo/client";
+import { useParams } from "react-router-dom";
 
 const GET_LESSON_BY_SLUG_QUERY = gql`
   query GetLessonBySlug($slug: String) {
-    lesson(where: { slug: $slug }) {
-      teacher {
-        avatarURL
-        bio
-        name
-      }
-      title
-      videoId
-      description
+  lesson(where: {slug: $slug}) {
+    title
+    teacher {
+      avatarURL
+      bio
+      name
     }
+    videoId
+    description
   }
+}
 `;
 
 interface GetLessonBySlugQueryResponse {
@@ -38,59 +41,58 @@ interface GetLessonBySlugQueryResponse {
   };
 }
 
-interface Videoprops {
-  lessonSlug: string;
-}
 
-export default function Video({ lessonSlug }: Videoprops) {
+export default function Video() {
+  const { slug } = useParams<{ slug: string}>();
   const { data } = useQuery<GetLessonBySlugQueryResponse>(GET_LESSON_BY_SLUG_QUERY, {
     variables: {
-      slug: lessonSlug,
+      slug: slug,
     },
   });
 
-  if (!data) {
-    return (
-      <div className="flex-1 justify-center mt-4">
-        <div className=" flex justify-center ">
-          <div className="h-full w-full max-w-[1100px] max-h-[60vh] aspect-video bg-gray-500 "></div>
-        </div>
-      </div>
-    );
-  }
+  console.log(data)
+  console.log(slug)
+  
 
   return (
     <div className="flex-1 mt-4">
       <div className=" flex justify-center">
         <div className="h-full w-full max-w-[1100px] max-h-[60vh] aspect-video  ">
-          <Player>
-            <Youtube videoId={data.lesson.videoId} />
-            <DefaultUi />
-          </Player>
+         {data ? (
+           <Player>
+           <Ui>
+           <Youtube videoId={data.lesson.videoId} />
+            <ClickToPlay />
+            <DefaultControls />
+           </Ui>
+         </Player>
+         ): <Skeleton height={563}/>}
         </div>
       </div>
 
       <div className="p-8 max-w-[1100px] mx-auto">
         <div className="flex items-start gap-6 lg:gap-16 flex-col lg:flex-row ">
           <div className="flex-1">
-            <h1 className="text-3xl font-bold">{data.lesson.title}</h1>
+            <h1 className="text-3xl font-bold">{data ? data.lesson.title : <Skeleton />}</h1>
             <p className="mt-4 text-gray-200 leading-relaxed">
-              {data.lesson.description}
+              {data ? data.lesson.description : <Skeleton />}
             </p>
 
             <div className="flex items-center gap-4 mt-6">
-              <img
+              {data ? (
+                <img
                 className="h-16 w-16 rounded-full border-2 border-blue-500"
                 src={data.lesson.teacher.avatarURL}
                 alt=""
               />
+              ) : <Skeleton />}
 
               <div className="leading-relaxed">
                 <strong className="font-bold text-2xl block">
-                  {data.lesson.teacher.name}
+                  {data ? data.lesson.teacher.name : <Skeleton />}
                 </strong>
                 <span className="text-gray-200 text-sm block">
-                  {data.lesson.teacher.bio}
+                  {data ? data.lesson.teacher.bio : <Skeleton />}
                 </span>
               </div>
             </div>
