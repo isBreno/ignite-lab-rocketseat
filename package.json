@@ -1,11 +1,13 @@
 {
   "name": "event-platform",
   "private": true,
+  "homepage": "ignite-lab-rocketseat/",
   "version": "0.0.0",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "publicar": "npm run build && ./node_modules/.bin/gh-pages -d build"
   },
   "dependencies": {
     "@apollo/client": "^3.6.9",
