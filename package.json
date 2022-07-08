@@ -1,6 +1,7 @@
 {
   "name": "event-platform",
   "private": true,
+  "homepage": "ignite-lab-rocketseat/",
   "version": "0.0.0",
   "scripts": {
     "dev": "vite",
